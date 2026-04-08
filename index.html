@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday ❤️</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Arial", sans-serif;
+    }
+
+    body {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      color: white;
+      background: #ffd9e8;
+    }
+
+    /* Ảnh nền */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background-image: url("cute-bg.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: brightness(0.72) blur(2px);
+      transform: scale(1.05);
+      z-index: 0;
+    }
+
+    /* lớp phủ hồng dễ thương */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.22), transparent 35%),
+        linear-gradient(to bottom, rgba(255, 192, 203, 0.16), rgba(255, 182, 193, 0.22));
+      z-index: 1;
+    }
+
+    /* canvas pháo hoa */
+    #fireworks {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* các trái tim bay */
+    .floating-hearts {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -30px;
+      font-size: 18px;
+      animation: floatUp linear infinite;
+      opacity: 0.75;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.35);
+        opacity: 0;
+      }
+    }
+
+    /* khung nội dung */
+    .content {
+      position: relative;
+      z-index: 3;
+      width: min(92vw, 760px);
+      padding: 28px 22px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 2px solid rgba(255,255,255,0.28);
+      box-shadow:
+        0 10px 35px rgba(255, 105, 180, 0.20),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+      animation: fadeIn 1.2s ease;
+    }
+
+    .top-title {
+      font-size: clamp(26px, 4.5vw, 52px);
+      font-weight: 700;
+      color: #fff6fb;
+      text-shadow: 0 3px 12px rgba(255, 105, 180, 0.45);
+      margin-bottom: 14px;
+    }
+
+    .date {
+      font-size: clamp(54px, 11vw, 110px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 3px;
+      color: #ffffff;
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.5),
+        0 0 24px rgba(255,182,193,0.55);
+    }
+
+    .korean {
+      margin-top: 14px;
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 700;
+      color: #fff0f7;
+      text-shadow: 0 2px 8px rgba(255, 105, 180, 0.35);
+    }
+
+    .hint {
+      margin-top: 14px;
+      font-size: clamp(14px, 2vw, 18px);
+      color: #fff8fc;
+      opacity: 0.96;
+      background: rgba(255,255,255,0.18);
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+    }
+
+    .message {
+      margin-top: 24px;
+      padding: 20px 16px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255,255,255,0.24);
+      display: none;
+      animation: popUp 0.8s ease;
+    }
+
+    .main-message {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      color: #fff9d9;
+      text-shadow: 0 0 12px rgba(255, 221, 87, 0.35);
+      line-height: 1.5;
+    }
+
+    .sub-message {
+      display: block;
+      margin-top: 12px;
+      font-size: clamp(16px, 2.6vw, 22px);
+      line-height: 1.8;
+      color: #ffffff;
+    }
+
+    .emoji-line {
+      margin-top: 10px;
+      font-size: clamp(22px, 3vw, 28px);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes popUp {
+      0% {
+        opacity: 0;
+        transform: scale(0.88);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .content {
+        padding: 24px 16px;
+        border-radius: 24px;
+      }
+    }
+  </style>
+</head>
+<body onclick="showBirthdayMessage(event)">
+  <div class="bg"></div>
+  <div class="overlay"></div>
+
+  <canvas id="fireworks"></canvas>
+
+  <div class="floating-hearts">
+    <span class="heart" style="left: 5%; animation-duration: 10s; animation-delay: 0s;">💖</span>
+    <span class="heart" style="left: 15%; animation-duration: 12s; animation-delay: 2s;">💕</span>
+    <span class="heart" style="left: 28%; animation-duration: 9s; animation-delay: 1s;">💗</span>
+    <span class="heart" style="left: 40%; animation-duration: 11s; animation-delay: 3s;">💓</span>
+    <span class="heart" style="left: 55%; animation-duration: 10s; animation-delay: 1.5s;">💖</span>
+    <span class="heart" style="left: 68%; animation-duration: 13s; animation-delay: 0.5s;">💞</span>
+    <span class="heart" style="left: 80%; animation-duration: 10s; animation-delay: 2.5s;">💘</span>
+    <span class="heart" style="left: 90%; animation-duration: 12s; animation-delay: 4s;">💕</span>
+  </div>
+
+  <div class="content">
+    <div class="top-title">Happy Birthday~</div>
+    <div class="date">04.09</div>
+    <div class="korean">생일 축하 드립니다!</div>
+    <div class="hint"> Click the screen. ✨</div>
+
+    <div class="message" id="message">
+      <div class="main-message">🎂 Happy Birthday, my love ❤️</div>
+      <span class="sub-message">
+        Chúc anh có một tuổi mới thật hạnh phúc,<br>
+        luôn bình an, khỏe mạnh và gặp thật nhiều điều đẹp đẽ.<br>
+        Em rất biết ơn vì anh đã xuất hiện trong cuộc đời em.
+      </span>
+      <div class="emoji-line">🎁💗🎉🍰</div>
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // 1) PHÁO HOA
+    // =========================
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+
+    let cw = canvas.width = window.innerWidth;
+    let ch = canvas.height = window.innerHeight;
+
+    window.addEventListener("resize", () => {
+      cw = canvas.width = window.innerWidth;
+      ch = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+
+    class Particle {
+      constructor(x, y, color, angle, speed, radius) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.angle = angle;
+        this.speed = speed;
+        this.radius = radius;
+        this.alpha = 1;
+        this.gravity = 0.045;
+      }
+
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        this.speed *= 0.985;
+        this.y += this.gravity;
+        this.alpha -= 0.012;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function createFirework(x, y) {
+      const colors = ["#ff77a9", "#ffd6e7", "#fff1a8", "#ffc4dd", "#ffffff", "#ff9cc6"];
+      const count = 58;
+
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count;
+        const speed = Math.random() * 4 + 2;
+        const radius = Math.random() * 2.2 + 1;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        particles.push(new Particle(x, y, color, angle, speed, radius));
+      }
+    }
+
+    function animateFireworks() {
+      ctx.clearRect(0, 0, cw, ch);
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].draw();
+
+        if (particles[i].alpha <= 0) {
+          particles.splice(i, 1);
+        }
+      }
+
+      requestAnimationFrame(animateFireworks);
+    }
+
+    animateFireworks();
+
+    setInterval(() => {
+      const x = Math.random() * cw * 0.8 + cw * 0.1;
+      const y = Math.random() * ch * 0.45 + 60;
+      createFirework(x, y);
+    }, 850);
+
+    // =========================
+    // 2) CLICK HIỆN LỜI CHÚC + PHÁT NHẠC
+    // =========================
+    let hasShownMessage = false;
+    let hasStartedMusic = false;
+
+    function showBirthdayMessage(event) {
+      if (!hasShownMessage) {
+        document.getElementById("message").style.display = "block";
+        hasShownMessage = true;
+      }
+
+      const x = event ? event.clientX : window.innerWidth / 2;
+      const y = event ? event.clientY : window.innerHeight / 2;
+
+      createFirework(x, y);
+      createFirework(window.innerWidth / 2, window.innerHeight / 2 - 50);
+
+      if (!hasStartedMusic) {
+        playHappyBirthday();
+        hasStartedMusic = true;
+      }
+    }
+
+    // =========================
+    // 3) NHẠC HAPPY BIRTHDAY
+    // =========================
+    function playTone(audioCtx, freq, duration, startTime) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, startTime);
+
+      gain.gain.setValueAtTime(0.0001, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.23, startTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(startTime);
+      osc.stop(startTime + duration);
+    }
+
+    function playHappyBirthday() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      const audioCtx = new AudioContextClass();
+      const now = audioCtx.currentTime;
+
+      const notes = {
+        C4: 261.63,
+        D4: 293.66,
+        E4: 329.63,
+        F4: 349.23,
+        G4: 392.00,
+        A4: 440.00,
+        B4: 493.88,
+        C5: 523.25,
+        D5: 587.33,
+        E5: 659.25,
+        F5: 698.46,
+        G5: 783.99
+      };
+
+      const melody = [
+        ["G4", 0.35], ["G4", 0.20], ["A4", 0.50], ["G4", 0.50], ["C5", 0.50], ["B4", 0.90],
+        ["G4", 0.35], ["G4", 0.20], ["A4", 0.50], ["G4", 0.50], ["D5", 0.50], ["C5", 0.90],
+        ["G4", 0.35], ["G4", 0.20], ["G5", 0.50], ["E5", 0.50], ["C5", 0.50], ["B4", 0.50], ["A4", 0.90],
+        ["F5", 0.35], ["F5", 0.20], ["E5", 0.50], ["C5", 0.50], ["D5", 0.50], ["C5", 1.00]
+      ];
+
+      let t = now + 0.1;
+      for (const [note, duration] of melody) {
+        playTone(audioCtx, notes[note], duration, t);
+        t += duration;
+      }
+    }
+  </script>
+</body>
+</html>
